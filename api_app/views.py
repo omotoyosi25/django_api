@@ -1,38 +1,83 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework import status, exceptions
+from rest_framework import status, exceptions, generics
 from  rest_framework.response import Response
 from .serializers import CategorySerializer, ProductSerializer, CreateProductSerializer
-from .models import Category, Product
+from .models import Category, Product 
 
 # Create your views here.
 
-class AddCategoryEndpoint(APIView):
-    def get(self, request, *args, **kwargs):
-        category=Category.objects.all( )
-        serializer=CategorySerializer(category, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+# class AddCategoryEndpoint(APIView):
+#     def get(self, request, *args, **kwargs):
+#         category=Category.objects.all( )
+#         serializer=CategorySerializer(category, many=True)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
 
+#     def post(self, request, *args, **kwargs):
+#         request.data
+#         serializer=CategorySerializer(data=request.data)
+#         if serializer.is_valid():#calls the validate method in our serializer
+#             serializer.save()#calls the create(post) or update(put) method depending on the request type
+#             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    # def post(self, request, *args, **kwargs):
+    #    serializer= CategorySerializer(data=request.data)
+    #    if serializer.is_valid():
+    #        serializer.save() #calls the create or update method depends on the request 
+    #        return Response(data=serializer.data, status=status.HTTP_201_CREATED)                                                                                                                                                                                                           a , status=status.HTTP_201_CREATED)
+    #    return Response(serializer.errors ,status=status.HTTP_400_BAD_REQUEST)
 
-    def post(self, request, *args, **kwargs):
-       serializer= CategorySerializer(data=request.data)
-       if serializer.is_valid():
-           serializer.save() #calls the create or update method depends on the request 
-           return Response(data=serializer.data , status=status.HTTP_201_CREATED)
-       return Response(serializer.errors , status =status.HTTP_400_BAD_REQUEST)
+class UpgradedCategoryEndpoint(generics.ListCreateAPIView):
+    queryset= Category.objects.all()
+    serializer_class=CategorySerializer
+
+class SingleCategoryEndpoint(generics.RetrieveAPIView):
+    queryset= Category.objects.all()
+    serializer_class=CategorySerializer
+    lookup_field='pk'
+
+class CategoryDeleteEndpoint(generics.DestroyAPIView):
+    queryset= Category.objects.all()
+    serializer_class=CategorySerializer
+    lookup_field='pk'
     
-class ProductEndpoint(APIView):
-    def get(self, request, *args, **kwargs):
-        products=Product.objects.all()
-        serializer=ProductSerializer(products, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+# class ProductEndpoint(APIView):
+#     def get(self, request, *args, **kwargs):
+#         products=Product.objects.all()
+#         serializer=ProductSerializer(products, many=True)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
         
-    def post(self,request,*args,**kwargs):
-        serializer=CreateProductSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     def post(self,request,*args,**kwargs):
+#         serializer=CreateProductSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class UpdateProductEndpoint(generics.ListCreateAPIView):
+    queryset= Product.objects.all()
+    serializer_class=CreateProductSerializer
+
+class SingleProductEndpoint(generics.RetrieveAPIView):
+    queryset= Product.objects.all()
+    serializer_class=CreateProductSerializer
+    lookup_field='pk'
+
+class ProductDeleteEndpoint(generics.DestroyAPIView):
+    queryset= Product.objects.all()
+    serializer_class=CreateProductSerializer
+    lookup_field='pk'
+    
+class ProductListEndpoint(generics.ListAPIView):
+    serializer_class=ProductSerializer
+    queryset=Product.objects.all()
+
+    def get_queryset(self):
+        queryset=super().get_queryset()
+        category = self.request.query_params.get('category')
+        if category is not None:
+            queryset=queryset.filter(category__name=category)
+        return queryset
     
 
 class ProductDetaillEndpoint(APIView):
