@@ -5,6 +5,7 @@ from . import views
 
 
 urlpatterns=[
+    path('users', views.UserRegistrationEndpoint.as_view(), name='all-users'),
     path('categories', views.UpgradedCategoryEndpoint.as_view(), name='category'),
     path('category/<int:pk>/delete', views.CategoryDeleteEndpoint.as_view(), name='category_delete'),
     path('category/<int:pk>', views.SingleCategoryEndpoint.as_view(), name='category_single'),

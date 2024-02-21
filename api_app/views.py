@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework import status, exceptions, generics
+from rest_framework import status, exceptions, generics, permissions
 from  rest_framework.response import Response
-from .serializers import CategorySerializer, ProductSerializer, CreateProductSerializer
+from django.contrib.auth.models import User
+from .serializers import CategorySerializer, ProductSerializer, CreateProductSerializer, UserCreateSerializer
 from .models import Category, Product 
 
 # Create your views here.
@@ -66,7 +67,7 @@ class SingleProductEndpoint(generics.RetrieveAPIView):
 class ProductDeleteEndpoint(generics.DestroyAPIView):
     queryset= Product.objects.all()
     serializer_class=CreateProductSerializer
-    lookup_field='pk'
+    lookup_field='pk' 
     
 class ProductListEndpoint(generics.ListAPIView):
     serializer_class=ProductSerializer
@@ -105,3 +106,9 @@ class ProductDetaillEndpoint(APIView):
         product=self.get_object(self.kwargs['product_id'])
         product.delete()
         return Response({'message':'product deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+    
+
+class UserRegistrationEndpoint(generics.CreateAPIView):
+    queryset=User.objects.all()
+    permission_classes=[permissions.AllowAny]
+    serializer_class=UserCreateSerializer

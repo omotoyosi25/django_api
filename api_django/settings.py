@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'api_app.apps.ApiAppConfig',
     'rest_framework',
     'drf_yasg',
+    'rest_framework.authtoken',
 
 ]
 
@@ -116,6 +117,15 @@ USE_I18N = True
 
 USE_TZ = True
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES':[
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES':[
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
