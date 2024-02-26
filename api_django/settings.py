@@ -41,12 +41,15 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'rest_framework.authtoken',
+    'djoser',
+    'corsheaders',  # Add CORS headers to responses from views.py
 
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -56,6 +59,17 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'api_django.urls'
+
+CORS_ALLOWED_ORIGINS=[
+    "http://localhost:3000",
+    # "http://domain.com"
+]
+
+# CORS_ALLOW_ALL_ORIGINS=True
+
+CSRF_TRUSTED_ORIGINS=[
+    "http://localhost:3000",
+]
 
 TEMPLATES = [
     {
@@ -138,3 +152,23 @@ MEDIA_ROOT=BASE_DIR / "mediafiles"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+DJOSER = {
+    'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
+    # 'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
+    'ACTIVATION_URL': '/activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True,
+    'SEND_CONFIRMATION_EMAIL':True,
+    'USER_CREATE_PASSWORD_RETYPE':True,
+    'SERIALIZERS': {},
+    # "LOGIN_FIELD": "email",
+}
+
+#email configuration
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+EMAIL_HOST_USER = '607fce227c6dea'
+EMAIL_HOST_PASSWORD = 'b17938cedb2828'
+EMAIL_PORT = '2525'
+DEFAULT_FROM_EMAIL='support@myapi.com'
+DOMAIN='local_host : 8000'

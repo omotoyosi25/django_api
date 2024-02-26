@@ -108,7 +108,7 @@ class ProductDetaillEndpoint(APIView):
         return Response({'message':'product deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
     
 
-class UserRegistrationEndpoint(generics.CreateAPIView):
-    queryset=User.objects.all()
-    permission_classes=[permissions.AllowAny]
-    serializer_class=UserCreateSerializer
+# class UserRegistrationEndpoint(generics.CreateAPIView):
+#     queryset=User.objects.all()
+#     permission_classes=[permissions.AllowAny]
+#     serializer_class=UserCreateSerializer
