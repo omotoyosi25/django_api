@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-pcky=va93$c1o!=-9+0l!5g01r6hzs=&@x9(^#ss!eb=_%rj_m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["https://django-api-tuqs.onrender.com", "localhost"]
+ALLOWED_HOSTS = ["https://django-api-tuqs.onrender.com", "localhost", "0.0.0.0"]
 
 
 
