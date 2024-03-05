@@ -25,7 +25,7 @@ from .models import Category, Product
     #    serializer= CategorySerializer(data=request.data)
     #    if serializer.is_valid():
     #        serializer.save() #calls the create or update method depends on the request 
-    #        return Response(data=serializer.data, status=status.HTTP_201_CREATED)                                                                                                                                                                                                           a , status=status.HTTP_201_CREATED)
+    #        return Response(data=serializer.data, status=status.HTTP_201_CREATED) 
     #    return Response(serializer.errors ,status=status.HTTP_400_BAD_REQUEST)
 
 class UpgradedCategoryEndpoint(generics.ListCreateAPIView):
